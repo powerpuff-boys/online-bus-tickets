@@ -1,13 +1,45 @@
 package com.fmi.edu.online.bus.tickets.model;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+@Entity
+@Table(name = "Ticket")
 public class Ticket {
 
+	@Id 
+	@GeneratedValue
 	private String id;
+	
+	@Column(nullable = false)
 	private String busId;
-	private LocalDateTime localDateTime;
+	
+	@Column(nullable=false, updatable=false)
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date localDateTime;
+	
+	@Column(nullable=false)
 	private boolean isChecked;
+
+	public Ticket(){}
+	
+	public Ticket(String busId, Date createdOn, boolean isChecked) {
+		setBusId(busId);
+		setLocalDateTime(localDateTime);
+		setChecked(isChecked);
+	}
+
+	public Ticket(String ticketId, String busId, Date createdOn, boolean isChecked) {
+		this(busId,createdOn, isChecked);
+		setId(ticketId);
+	}
 
 	public String getId() {
 		return id;
@@ -25,12 +57,12 @@ public class Ticket {
 		this.busId = busId;
 	}
 
-	public LocalDateTime getLocalDateTime() {
+	public Date getLocalDateTime() {
 		return localDateTime;
 	}
 
-	public void setLocalDateTime(LocalDateTime localDateTime) {
-		this.localDateTime = localDateTime;
+	public void setLocalDateTime(Date localDateTime2) {
+		this.localDateTime = localDateTime2;
 	}
 
 	public boolean isChecked() {
@@ -39,6 +71,12 @@ public class Ticket {
 
 	public void setChecked(boolean isChecked) {
 		this.isChecked = isChecked;
+	}
+
+	@Override
+	public String toString() {
+		return "Ticket [id=" + id + ", busId=" + busId + ", localDateTime=" + localDateTime + ", isChecked=" + isChecked
+				+ "]";
 	}
 
 }
