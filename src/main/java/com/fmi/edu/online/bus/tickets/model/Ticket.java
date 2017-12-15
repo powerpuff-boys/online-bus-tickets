@@ -1,44 +1,44 @@
 package com.fmi.edu.online.bus.tickets.model;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 
 public class Ticket {
 
-	private long id;
-	private long busId;
-	private Date dateTime;
+	private String id;
+	private String busId;
+	private LocalDateTime localDateTime;
 	private boolean isChecked;
-	
-	public long getId() {
+
+	public String getId() {
 		return id;
 	}
-	
-	public void setId(long id) {
+
+	public void setId(String id) {
 		this.id = id;
 	}
-	
-	public long getBusId() {
+
+	public String getBusId() {
 		return busId;
 	}
-	
-	public void setBusId(long busId) {
+
+	public void setBusId(String busId) {
 		this.busId = busId;
 	}
-	
-	public Date getDateTime() {
-		return dateTime;
+
+	public LocalDateTime getLocalDateTime() {
+		return localDateTime;
 	}
-	
-	public void setDateTime(Date dateTime) {
-		this.dateTime = dateTime;
+
+	public void setLocalDateTime(LocalDateTime localDateTime) {
+		this.localDateTime = localDateTime;
 	}
-	
+
 	public boolean isChecked() {
 		return isChecked;
 	}
-	
+
 	public void setChecked(boolean isChecked) {
 		this.isChecked = isChecked;
 	}
-	
+
 }
