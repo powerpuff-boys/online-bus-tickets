@@ -12,16 +12,15 @@ import com.fmi.edu.online.bus.tickets.model.convertor.TicketConvertor;
 
 public class TicketProcessor {
 
-	// @Inject
 	private TicketDtoDao ticketDtoDAO = new TicketDtoDao();
-
+		
 	public void createTicket(TicketDto ticketDto) {
-		// if(isValidInformation(busId,createdOn)){
-		//
-		// }
-		// TODO validation
-		ticketDto.setId(UUID.randomUUID().toString());
-		ticketDtoDAO.create(ticketDto);
+		try {
+			ticketDto.setId(UUID.randomUUID().toString());
+			ticketDtoDAO.create(ticketDto);
+		} catch (Exception e) {
+			throw e;
+		}
 	}
 
 	public void updateTicket(String ticketId) {
@@ -29,7 +28,6 @@ public class TicketProcessor {
 
 		}
 		ticketDtoDAO.update(ticketId);
-		// ticketDAO.update(ticket);
 	}
 
 	public List<TicketDto> getAllExpiredTickets() {
@@ -48,8 +46,8 @@ public class TicketProcessor {
 	}
 
 	private boolean isValidTicket(String ticketId) {
+		// BusId -> correct
 		return false;
-		// return ticketDAO.getTicket(ticket) != null;
 	}
 
 }
