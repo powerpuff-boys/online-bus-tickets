@@ -5,8 +5,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import com.fmi.edu.online.bus.tickets.Utils;
 import com.google.gson.annotations.SerializedName;
@@ -23,11 +21,9 @@ public class TicketDto {
 	private String busId;
 
 	@Column(nullable = false, updatable = false)
-	@Temporal(TemporalType.TIMESTAMP)
 	private String createdOn;
 
 	@Column(nullable = false, updatable = false)
-	@Temporal(TemporalType.TIMESTAMP)
 	private String expiresOn;
 
 	@Column(nullable = false)
