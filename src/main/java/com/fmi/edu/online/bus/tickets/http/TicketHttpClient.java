@@ -51,9 +51,8 @@ public class TicketHttpClient {
 
 		httpResponse = httpClient.execute(httpPost);
 		String string = IOUtils.toString(httpResponse.getEntity().getContent(), ENCODING_UTF);
-		ticketDto = gson.fromJson(string, TicketDto.class);
 
-		return TicketConvertor.convertToTicket(ticketDto);
+		return TicketConvertor.convertToTicket(gson.fromJson(string, TicketDto.class));
 	}
 
 	public Ticket updateTicket(String ticketId, Ticket ticket) throws ClientProtocolException, IOException {
