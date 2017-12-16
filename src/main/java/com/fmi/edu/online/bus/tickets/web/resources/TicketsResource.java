@@ -41,6 +41,6 @@ public class TicketsResource {
 	@POST
 	public Response createTicket(TicketDto ticket){
 		tickets.add(ticket);
-		return Response.created(URI.create("tickets/"+ ticket.getId())).build();
+		return Response.created(URI.create("tickets/"+ ticket.getId())).entity(ticket).build();
 	}
 }
