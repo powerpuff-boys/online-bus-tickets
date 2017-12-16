@@ -1,9 +1,14 @@
 package com.fmi.edu.online.bus.tickets.dao;
 
+import java.util.Collections;
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.TypedQuery;
 
+import com.fmi.edu.online.bus.tickets.model.Ticket;
 import com.fmi.edu.online.bus.tickets.model.TicketDto;
 
 
@@ -32,9 +37,15 @@ public class TicketDtoDao {
 	}
 
 	public void delete(String id) {
-		// TODO Auto-generated method stub
 		em.getTransaction().begin();
 		em.remove(em.find(TicketDto.class, id));
 		em.getTransaction().commit();
+	}
+
+	public List<Ticket> getTickets() {
+		// TODO Auto-generated method stub
+		em.getTransaction().begin();
+		TypedQuery<Ticket> query = em.createNamedQuery("SELECT * FROM bustickets", Ticket.class);
+		return Collections.unmodifiableList(query.getResultList());
 	}
 }
