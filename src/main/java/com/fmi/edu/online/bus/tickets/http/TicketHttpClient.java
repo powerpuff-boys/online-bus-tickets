@@ -2,8 +2,6 @@ package com.fmi.edu.online.bus.tickets.http;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
@@ -75,7 +73,7 @@ public class TicketHttpClient {
 		httpResponse = httpClient.execute(httpGet);
 		HttpEntity entity = httpResponse.getEntity();
 		String entityString = IOUtils.toString(entity.getContent(), ENCODING_UTF);
-		return gson.fromJson(entityString, Ticket.class);
+		return TicketConvertor.convertToTicket(gson.fromJson(entityString, TicketDto.class));
 	}
 
 	private static String buildUrlWith(String ticketId) {
@@ -83,9 +81,18 @@ public class TicketHttpClient {
 	}
 
 	public static void main(String[] args) throws ClientProtocolException, IOException, ParseException {
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-		Calendar calendar = Calendar.getInstance();
-		System.out.println((new TicketHttpClient().createTicket(new Ticket("bus-id1", calendar.getTime(), false))));
+		// SimpleDateFormat simpleDateFormat = new
+		// SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+		// Calendar calendar = Calendar.getInstance();
+		//
+		// TicketHttpClient ticketHttpClient = new TicketHttpClient();
+		// Ticket ticket = new Ticket("bus-id1", calendar.getTime(), false);
+		// System.out.println(ticketHttpClient.createTicket(ticket));
+		//
+		// ticket.setChecked(true);
+		// System.out.println(ticketHttpClient.updateTicket("54c409ad-2f39-4fc0-a6f5-77810fdd72db",
+		// ticket));
 
+		// System.out.println(ticketHttpClient.getTicketBy("54c409ad-2f39-4fc0-a6f5-77810fdd72db"));
 	}
 }
