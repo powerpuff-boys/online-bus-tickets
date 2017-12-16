@@ -26,11 +26,13 @@ public class Ticket {
 		setBusId(busId);
 		setCreatedOn(createdOn);
 		setChecked(isChecked);
+		setExpiresOn();
 	}
 
 	public Ticket(String ticketId, String busId, Date createdOn, boolean isChecked) {
 		this(busId, createdOn, isChecked);
 		setId(ticketId);
+		setExpiresOn();
 	}
 
 	public Ticket(TicketDto ticketDto) {
@@ -41,6 +43,7 @@ public class Ticket {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
+		setExpiresOn();
 		setChecked(ticketDto.isChecked());
 
 	}

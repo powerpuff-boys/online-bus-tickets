@@ -22,7 +22,7 @@ public class TicketDtoDao {
 	public void update(String ticketId) {
 		// TODO Auto-generated method stub
 		em.getTransaction().begin();
-		em.find(TicketDto.class,ticketId).setChecked(false);
+		em.find(TicketDto.class,ticketId).setChecked(true);
 		em.getTransaction().commit();
 	}
 

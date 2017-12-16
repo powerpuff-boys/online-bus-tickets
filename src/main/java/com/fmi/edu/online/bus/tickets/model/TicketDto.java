@@ -47,6 +47,7 @@ public class TicketDto {
 		setBusId(ticket.getBusId());
 		setCreatedOn(Utils.simpleDateFormat.format(ticket.getCreatedOn()));
 		setChecked(ticket.isChecked());
+		setExpiresOn(Utils.simpleDateFormat.format(ticket.getExpiresOn()));
 	}
 
 	public String getId() {
@@ -87,12 +88,6 @@ public class TicketDto {
 
 	public void setExpiresOn(String expiresOn) {
 		this.expiresOn = expiresOn;
-	}
-
-	@Override
-	public String toString() {
-		return "TicketDto [id=" + id + ", busId=" + busId + ", createdOn=" + createdOn + ", isChecked=" + isChecked
-				+ "]";
 	}
 
 }

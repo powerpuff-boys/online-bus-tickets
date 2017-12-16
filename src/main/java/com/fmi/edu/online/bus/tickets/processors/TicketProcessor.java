@@ -39,5 +39,4 @@ public class TicketProcessor {
 		return false;
 		// return ticketDAO.getTicket(ticket) != null;
 	}
-
 }
