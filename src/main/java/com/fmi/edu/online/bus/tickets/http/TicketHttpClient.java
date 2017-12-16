@@ -12,7 +12,9 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.util.EntityUtils;
 
+import com.fmi.edu.online.bus.tickets.model.Ticket;
 import com.fmi.edu.online.bus.tickets.model.TicketDto;
 import com.google.gson.Gson;
 
@@ -32,7 +34,7 @@ public class TicketHttpClient {
 		gson = new Gson();
 	}
 
-	public int createTicket(TicketDto ticketDto) throws ClientProtocolException, IOException {
+	public Ticket createTicket(TicketDto ticketDto) throws ClientProtocolException, IOException {
 		HttpPost httpPost = new HttpPost(ENDPOINT);
 		httpPost.setHeader(CONTENT_TYPE, APPLICATION_JSON);
 		httpPost.setHeader(ACCEPT, APPLICATION_JSON);
@@ -41,10 +43,10 @@ public class TicketHttpClient {
 		httpPost.setEntity(stringEntity);
 
 		httpResponse = httpClient.execute(httpPost);
-		return httpResponse.getStatusLine().getStatusCode();
+		return gson.fromJson(EntityUtils.toString(httpResponse.getEntity()), Ticket.class);
 	}
 
-	public int updateTicket(String ticketId, TicketDto ticketDto) throws ClientProtocolException, IOException {
+	public Ticket updateTicket(String ticketId, TicketDto ticketDto) throws ClientProtocolException, IOException {
 		HttpPut httpPut = new HttpPut(buildUrlWith(ticketId));
 		httpPut.setHeader(CONTENT_TYPE, APPLICATION_JSON);
 
@@ -52,21 +54,21 @@ public class TicketHttpClient {
 		httpPut.setEntity(stringEntity);
 
 		httpResponse = httpClient.execute(httpPut);
-		return httpResponse.getStatusLine().getStatusCode();
+		return gson.fromJson(EntityUtils.toString(httpResponse.getEntity()), Ticket.class);
 	}
 
-	public TicketDto getTicketBy(String ticketId) throws ClientProtocolException, IOException {
+	public Ticket getTicketBy(String ticketId) throws ClientProtocolException, IOException {
 		HttpGet httpGet = new HttpGet(buildUrlWith(ticketId));
 		httpGet.setHeader(ACCEPT, APPLICATION_JSON);
 
 		httpResponse = httpClient.execute(httpGet);
 		HttpEntity entity = httpResponse.getEntity();
 		String entityString = IOUtils.toString(entity.getContent(), "UTF-8");
-		return gson.fromJson(entityString, TicketDto.class);
+		return gson.fromJson(entityString, Ticket.class);
 	}
 
 	private static String buildUrlWith(String ticketId) {
 		return new StringBuilder(ENDPOINT).append("/").append(ticketId).toString();
 	}
-	
+
 }

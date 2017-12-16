@@ -29,6 +29,13 @@ public class TicketDto {
 		setId(ticketId);
 	}
 
+	public TicketDto(Ticket ticket) {
+		setId(ticket.getId());
+		setBusId(ticket.getBusId());
+		setLocalDateTime(ticket.getLocalDateTime().toString());
+		setChecked(ticket.isChecked());
+	}
+
 	public String getId() {
 		return id;
 	}

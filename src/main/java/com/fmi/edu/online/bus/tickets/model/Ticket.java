@@ -14,22 +14,23 @@ import javax.persistence.TemporalType;
 @Table(name = "Ticket")
 public class Ticket {
 
-	@Id 
+	@Id
 	@GeneratedValue
 	private String id;
-	
+
 	@Column(nullable = false)
 	private String busId;
-	
-	@Column(nullable=false, updatable=false)
+
+	@Column(nullable = false, updatable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date localDateTime;
-	
-	@Column(nullable=false)
+
+	@Column(nullable = false)
 	private boolean isChecked;
 
-	public Ticket(){}
-	
+	public Ticket() {
+	}
+
 	public Ticket(String busId, Date createdOn, boolean isChecked) {
 		setBusId(busId);
 		setLocalDateTime(localDateTime);
@@ -37,8 +38,16 @@ public class Ticket {
 	}
 
 	public Ticket(String ticketId, String busId, Date createdOn, boolean isChecked) {
-		this(busId,createdOn, isChecked);
+		this(busId, createdOn, isChecked);
 		setId(ticketId);
+	}
+
+	@SuppressWarnings("deprecation")
+	public Ticket(TicketDto ticketDto) {
+		setId(ticketDto.getId());
+		setBusId(ticketDto.getBusId());
+		this.setLocalDateTime(new Date(ticketDto.getLocalDateTime()));
+		setChecked(ticketDto.isChecked());
 	}
 
 	public String getId() {
