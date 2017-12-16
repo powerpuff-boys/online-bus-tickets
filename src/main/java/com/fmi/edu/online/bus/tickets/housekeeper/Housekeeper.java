@@ -2,7 +2,6 @@ package com.fmi.edu.online.bus.tickets.housekeeper;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import javax.servlet.ServletConfig;
@@ -13,16 +12,20 @@ import com.fmi.edu.online.bus.tickets.processors.TicketProcessor;
 
 public class Housekeeper extends HttpServlet {
 
+	private static final long serialVersionUID = 1L;
+
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
+		final TicketProcessor ticketProcessor = new TicketProcessor();
+
 		ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
 
-		ScheduledFuture scheduledFuture = scheduledExecutorService.scheduleAtFixedRate(new Runnable() {
+		scheduledExecutorService.scheduleAtFixedRate(new Runnable() {
 
 			@Override
 			public void run() {
-				private TicketProcessor ticketProcessor = new TicketProcessor();
+				ticketProcessor.getAllExpiredTickets().forEach(ticket -> ticketProcessor.deleteTicket(ticket.getId()));
 			}
 		}, 3, 3, TimeUnit.MINUTES);
 	}
