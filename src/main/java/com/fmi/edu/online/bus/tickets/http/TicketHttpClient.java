@@ -21,6 +21,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 public class TicketHttpClient {
+	private static final String AUTHORIZATION = "Authorization";
+	private static final String BASIC = "Basic ";
 	private static final String ENCODING_UTF = "UTF-8";
 	private static final String ACCEPT = "Accept";
 	private static final String CONTENT_TYPE = "Content-Type";
@@ -37,10 +39,12 @@ public class TicketHttpClient {
 		gson = new GsonBuilder().create();
 	}
 
-	public Ticket createTicket(Ticket ticket) throws ClientProtocolException, IOException {
+	public Ticket createTicket(Ticket ticket, String username, String password)
+			throws ClientProtocolException, IOException {
 		HttpPost httpPost = new HttpPost(HttpUtil.ENDPOINT);
 		httpPost.setHeader(CONTENT_TYPE, APPLICATION_JSON);
 		httpPost.setHeader(ACCEPT, APPLICATION_JSON);
+		httpPost.setHeader(AUTHORIZATION, BASIC + HttpUtil.buildEncodedCredentials(username, password));
 
 		stringEntity = new StringEntity(gson.toJson(TicketConvertor.convertToDto(ticket)));
 		httpPost.setEntity(stringEntity);

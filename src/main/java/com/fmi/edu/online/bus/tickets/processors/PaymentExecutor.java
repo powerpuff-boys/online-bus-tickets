@@ -47,7 +47,6 @@ public class PaymentExecutor {
 		return info.getAmount() >= DEFAULT_TICKET_PRICE;
 	}
 
-	
 	public boolean executePayment(String userName, String password) {
 		UserPaymentInformation info = retrieveUser(userName);
 		if (info.getAmount() < DEFAULT_TICKET_PRICE) {
@@ -79,8 +78,8 @@ public class PaymentExecutor {
 		public double getAmount() {
 			return amount;
 		}
-		
-		public void setAmount(double newAmount){
+
+		public void setAmount(double newAmount) {
 			this.amount = newAmount;
 		}
 
