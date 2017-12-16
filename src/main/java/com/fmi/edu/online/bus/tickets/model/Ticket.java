@@ -1,8 +1,5 @@
 package com.fmi.edu.online.bus.tickets.model;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -35,15 +32,7 @@ public class Ticket {
 	public Ticket(TicketDto ticketDto) {
 		setId(ticketDto.getId());
 		setBusId(ticketDto.getBusId());
-		DateFormat formatter = new SimpleDateFormat("d-MMM-yyyy,HH:mm:ss aaa");
-		Date date= null;
-		try {
-			date = formatter.parse(ticketDto.getCreatedOn());
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		setCreatedOn(date);
+		setCreatedOn(new Date(ticketDto.getCreatedOn()));
 		setChecked(ticketDto.isChecked());
 	}
 

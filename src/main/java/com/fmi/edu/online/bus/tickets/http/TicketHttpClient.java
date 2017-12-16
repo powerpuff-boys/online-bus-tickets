@@ -1,6 +1,7 @@
 package com.fmi.edu.online.bus.tickets.http;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.Calendar;
 
 import org.apache.commons.io.IOUtils;
@@ -48,8 +49,9 @@ public class TicketHttpClient {
 
 		httpResponse = httpClient.execute(httpPost);
 		HttpEntity entity = httpResponse.getEntity();
-		ticketDto = gson.fromJson(IOUtils.toString(entity.getContent(), ENCODING_UTF),
-				TicketDto.class);
+		String string = IOUtils.toString(entity.getContent(), ENCODING_UTF);
+		System.out.println(string);
+		ticketDto = gson.fromJson(string, TicketDto.class);
 		System.out.println(ticketDto);
 
 		return TicketConvertor.convertToTicket(ticketDto);
@@ -82,7 +84,7 @@ public class TicketHttpClient {
 		return new StringBuilder(ENDPOINT).append("/").append(ticketId).toString();
 	}
 
-	public static void main(String[] args) throws ClientProtocolException, IOException {
+	public static void main(String[] args) throws ClientProtocolException, IOException, ParseException {
 		System.out.println(
 				(new TicketHttpClient().createTicket(new Ticket("bus-id1", Calendar.getInstance().getTime(), false))));
 

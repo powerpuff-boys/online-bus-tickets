@@ -8,6 +8,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.google.gson.annotations.SerializedName;
+
 @Entity
 @Table(name = "Ticket")
 public class TicketDto {
@@ -28,6 +30,7 @@ public class TicketDto {
 	private String expiresOn;
 
 	@Column(nullable = false)
+	@SerializedName(value = "checked")
 	private boolean isChecked;
 
 	public TicketDto() {
@@ -45,7 +48,6 @@ public class TicketDto {
 	}
 
 	public TicketDto(Ticket ticket) {
-		setId(ticket.getId());
 		setBusId(ticket.getBusId());
 		setCreatedOn(ticket.getCreatedOn().toString());
 		setChecked(ticket.isChecked());
