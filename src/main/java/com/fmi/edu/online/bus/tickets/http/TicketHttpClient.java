@@ -1,7 +1,6 @@
 package com.fmi.edu.online.bus.tickets.http;
 
 import java.io.IOException;
-import java.text.ParseException;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
@@ -26,7 +25,6 @@ public class TicketHttpClient {
 	private static final String ACCEPT = "Accept";
 	private static final String CONTENT_TYPE = "Content-Type";
 	private static final String APPLICATION_JSON = "application/json";
-	private static final String ENDPOINT = "http://localhost:8080/bus-tickets/rest/tickets";
 
 	private HttpClient httpClient;
 	private HttpResponse httpResponse;
@@ -40,7 +38,7 @@ public class TicketHttpClient {
 	}
 
 	public Ticket createTicket(Ticket ticket) throws ClientProtocolException, IOException {
-		HttpPost httpPost = new HttpPost(ENDPOINT);
+		HttpPost httpPost = new HttpPost(HttpUtil.ENDPOINT);
 		httpPost.setHeader(CONTENT_TYPE, APPLICATION_JSON);
 		httpPost.setHeader(ACCEPT, APPLICATION_JSON);
 
@@ -54,7 +52,7 @@ public class TicketHttpClient {
 	}
 
 	public Ticket updateTicket(String ticketId, Ticket ticket) throws ClientProtocolException, IOException {
-		HttpPut httpPut = new HttpPut(buildUrlWith(ticketId));
+		HttpPut httpPut = new HttpPut(HttpUtil.buildUrlWith(ticketId));
 		httpPut.setHeader(CONTENT_TYPE, APPLICATION_JSON);
 		httpPut.setHeader(ACCEPT, APPLICATION_JSON);
 
@@ -67,7 +65,7 @@ public class TicketHttpClient {
 	}
 
 	public Ticket getTicketBy(String ticketId) throws ClientProtocolException, IOException {
-		HttpGet httpGet = new HttpGet(buildUrlWith(ticketId));
+		HttpGet httpGet = new HttpGet(HttpUtil.buildUrlWith(ticketId));
 		httpGet.setHeader(ACCEPT, APPLICATION_JSON);
 
 		httpResponse = httpClient.execute(httpGet);
@@ -76,23 +74,4 @@ public class TicketHttpClient {
 		return TicketConvertor.convertToTicket(gson.fromJson(entityString, TicketDto.class));
 	}
 
-	private static String buildUrlWith(String ticketId) {
-		return new StringBuilder(ENDPOINT).append("/").append(ticketId).toString();
-	}
-
-	public static void main(String[] args) throws ClientProtocolException, IOException, ParseException {
-		// SimpleDateFormat simpleDateFormat = new
-		// SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-		// Calendar calendar = Calendar.getInstance();
-		//
-		// TicketHttpClient ticketHttpClient = new TicketHttpClient();
-		// Ticket ticket = new Ticket("bus-id1", calendar.getTime(), false);
-		// System.out.println(ticketHttpClient.createTicket(ticket));
-		//
-		// ticket.setChecked(true);
-		// System.out.println(ticketHttpClient.updateTicket("54c409ad-2f39-4fc0-a6f5-77810fdd72db",
-		// ticket));
-
-		// System.out.println(ticketHttpClient.getTicketBy("54c409ad-2f39-4fc0-a6f5-77810fdd72db"));
-	}
 }
