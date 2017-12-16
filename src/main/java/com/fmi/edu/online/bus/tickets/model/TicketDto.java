@@ -8,6 +8,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fmi.edu.online.bus.tickets.Utils;
 import com.google.gson.annotations.SerializedName;
 
 @Entity
@@ -49,7 +50,7 @@ public class TicketDto {
 
 	public TicketDto(Ticket ticket) {
 		setBusId(ticket.getBusId());
-		setCreatedOn(ticket.getCreatedOn().toString());
+		setCreatedOn(Utils.simpleDateFormat.format(ticket.getCreatedOn()));
 		setChecked(ticket.isChecked());
 	}
 
@@ -95,7 +96,7 @@ public class TicketDto {
 
 	@Override
 	public String toString() {
-		return "TicketDto [id=" + id + ", busId=" + busId + ", localDateTime=" + createdOn + ", isChecked=" + isChecked
+		return "TicketDto [id=" + id + ", busId=" + busId + ", createdOn=" + createdOn + ", isChecked=" + isChecked
 				+ "]";
 	}
 

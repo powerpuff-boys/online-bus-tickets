@@ -2,6 +2,7 @@ package com.fmi.edu.online.bus.tickets.http;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import org.apache.commons.io.IOUtils;
@@ -20,6 +21,7 @@ import com.fmi.edu.online.bus.tickets.model.Ticket;
 import com.fmi.edu.online.bus.tickets.model.TicketDto;
 import com.fmi.edu.online.bus.tickets.model.convertor.TicketConvertor;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public class TicketHttpClient {
 	private static final String ENCODING_UTF = "UTF-8";
@@ -36,7 +38,7 @@ public class TicketHttpClient {
 
 	public TicketHttpClient() {
 		httpClient = HttpClientBuilder.create().build();
-		gson = new Gson();
+		gson = new GsonBuilder().create();
 	}
 
 	public Ticket createTicket(Ticket ticket) throws ClientProtocolException, IOException {
@@ -48,11 +50,8 @@ public class TicketHttpClient {
 		httpPost.setEntity(stringEntity);
 
 		httpResponse = httpClient.execute(httpPost);
-		HttpEntity entity = httpResponse.getEntity();
-		String string = IOUtils.toString(entity.getContent(), ENCODING_UTF);
-		System.out.println(string);
+		String string = IOUtils.toString(httpResponse.getEntity().getContent(), ENCODING_UTF);
 		ticketDto = gson.fromJson(string, TicketDto.class);
-		System.out.println(ticketDto);
 
 		return TicketConvertor.convertToTicket(ticketDto);
 	}
@@ -85,8 +84,9 @@ public class TicketHttpClient {
 	}
 
 	public static void main(String[] args) throws ClientProtocolException, IOException, ParseException {
-		System.out.println(
-				(new TicketHttpClient().createTicket(new Ticket("bus-id1", Calendar.getInstance().getTime(), false))));
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+		Calendar calendar = Calendar.getInstance();
+		System.out.println((new TicketHttpClient().createTicket(new Ticket("bus-id1", calendar.getTime(), false))));
 
 	}
 }

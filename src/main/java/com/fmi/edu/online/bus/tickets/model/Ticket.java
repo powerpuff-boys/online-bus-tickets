@@ -1,5 +1,7 @@
 package com.fmi.edu.online.bus.tickets.model;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -14,6 +16,8 @@ public class Ticket {
 	private Date expiresOn;
 
 	private boolean isChecked;
+
+	SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
 	public Ticket() {
 	}
@@ -32,8 +36,13 @@ public class Ticket {
 	public Ticket(TicketDto ticketDto) {
 		setId(ticketDto.getId());
 		setBusId(ticketDto.getBusId());
-		setCreatedOn(new Date(ticketDto.getCreatedOn()));
+		try {
+			setCreatedOn(simpleDateFormat.parse(ticketDto.getCreatedOn()));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 		setChecked(ticketDto.isChecked());
+
 	}
 
 	public String getId() {
@@ -81,8 +90,7 @@ public class Ticket {
 
 	@Override
 	public String toString() {
-		return "Ticket [id=" + id + ", busId=" + busId + ", localDateTime=" + createdOn + ", isChecked=" + isChecked
-				+ "]";
+		return "Ticket [id=" + id + ", busId=" + busId + ", createdOn=" + createdOn + ", isChecked=" + isChecked + "]";
 	}
 
 }
