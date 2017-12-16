@@ -55,10 +55,12 @@ public class TicketHttpClient {
 		return TicketConvertor.convertToTicket(gson.fromJson(string, TicketDto.class));
 	}
 
-	public Ticket updateTicket(String ticketId, Ticket ticket) throws ClientProtocolException, IOException {
+	public Ticket updateTicket(String ticketId, Ticket ticket, String username, String password)
+			throws ClientProtocolException, IOException {
 		HttpPut httpPut = new HttpPut(HttpUtil.buildUrlWith(ticketId));
 		httpPut.setHeader(CONTENT_TYPE, APPLICATION_JSON);
 		httpPut.setHeader(ACCEPT, APPLICATION_JSON);
+		httpPut.setHeader(AUTHORIZATION, BASIC + HttpUtil.buildEncodedCredentials(username, password));
 
 		stringEntity = new StringEntity(gson.toJson(TicketConvertor.convertToDto(ticket)));
 		httpPut.setEntity(stringEntity);
