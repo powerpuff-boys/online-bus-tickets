@@ -14,19 +14,19 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import com.fmi.edu.online.bus.tickets.model.Ticket;
+import com.fmi.edu.online.bus.tickets.model.TicketDto;
 
 @Path("/tickets")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class TicketsResource {
 
-	private static List<Ticket> tickets = new ArrayList<>();
+	private static List<TicketDto> tickets = new ArrayList<>();
 	
 	@GET
 	@Path("/{id}")
 	public Response getTicket(@PathParam("id") String id){
-		Ticket result = tickets.stream().filter(ticket -> ticket.getId().equals(id)).findFirst().orElse(null);
+		TicketDto result = tickets.stream().filter(ticket -> ticket.getId().equals(id)).findFirst().orElse(null);
 		if (result == null) {
 			return Response.status(Status.NOT_FOUND).build();
 		}
@@ -39,7 +39,7 @@ public class TicketsResource {
 	}
 	
 	@POST
-	public Response createTicket(Ticket ticket){
+	public Response createTicket(TicketDto ticket){
 		tickets.add(ticket);
 		return Response.created(URI.create("tickets/"+ ticket.getId())).build();
 	}
