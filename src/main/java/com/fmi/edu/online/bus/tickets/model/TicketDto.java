@@ -2,7 +2,6 @@ package com.fmi.edu.online.bus.tickets.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -14,7 +13,7 @@ import com.google.gson.annotations.SerializedName;
 public class TicketDto {
 
 	@Id
-	@GeneratedValue
+	@Column(nullable = false, unique = true, updatable = false)
 	private String id;
 
 	@Column(nullable = false)

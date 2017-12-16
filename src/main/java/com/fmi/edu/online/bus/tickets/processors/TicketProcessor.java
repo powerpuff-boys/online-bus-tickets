@@ -1,10 +1,8 @@
 package com.fmi.edu.online.bus.tickets.processors;
 
-import java.sql.Date;
-import java.time.Instant;
+import java.util.UUID;
 
 import com.fmi.edu.online.bus.tickets.dao.TicketDtoDao;
-import com.fmi.edu.online.bus.tickets.model.Ticket;
 import com.fmi.edu.online.bus.tickets.model.TicketDto;
 
 public class TicketProcessor {
@@ -12,12 +10,12 @@ public class TicketProcessor {
 	// @Inject
 	private TicketDtoDao ticketDtoDAO = new TicketDtoDao();
 
-	public void createTicket(Ticket ticket) {
+	public void createTicket(TicketDto ticketDto) {
 		// if(isValidInformation(busId,createdOn)){
 		//
 		// }
 		// TODO validation
-		TicketDto ticketDto = new TicketDto(ticket);
+		ticketDto.setId(UUID.randomUUID().toString());
 		ticketDtoDAO.create(ticketDto);
 	}
 
@@ -42,7 +40,4 @@ public class TicketProcessor {
 		// return ticketDAO.getTicket(ticket) != null;
 	}
 
-	public static void main(String[] args) {
-		new TicketProcessor().createTicket(new Ticket("buska", Date.from(Instant.now()), false));
-	}
 }
