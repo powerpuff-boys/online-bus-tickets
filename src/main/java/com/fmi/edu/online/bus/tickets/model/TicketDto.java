@@ -1,31 +1,45 @@
 package com.fmi.edu.online.bus.tickets.model;
 
-import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
-import com.google.gson.annotations.SerializedName;
-
+@Entity
+@Table(name = "Ticket")
 public class TicketDto {
 
+	@Id 
+	@GeneratedValue
 	private String id;
-
+	
+	@Column(nullable = false)
 	private String busId;
+	
+	@Column(nullable=false, updatable=false)
+	@Temporal(TemporalType.TIMESTAMP)
+	private String createdOn;
 
-	private String localDateTime;
-
-	@SerializedName("checked")
+	@Column(nullable=false, updatable=false)
+	@Temporal(TemporalType.TIMESTAMP)
+	private String expiresOn;
+	
+	@Column(nullable=false)
 	private boolean isChecked;
 
-	public TicketDto() {
-	}
-
-	public TicketDto(String busId, Date createdOn, boolean isChecked) {
+	public TicketDto(){}
+	
+	public TicketDto(String busId, String createdOn, boolean isChecked) {
 		setBusId(busId);
-		setLocalDateTime(localDateTime);
+		setCreatedOn(createdOn);
 		setChecked(isChecked);
 	}
 
-	public TicketDto(String ticketId, String busId, Date createdOn, boolean isChecked) {
-		this(busId, createdOn, isChecked);
+	public TicketDto(String ticketId, String busId, String createdOn, boolean isChecked) {
+		this(busId,createdOn, isChecked);
 		setId(ticketId);
 	}
 
@@ -52,14 +66,6 @@ public class TicketDto {
 		this.busId = busId;
 	}
 
-	public String getLocalDateTime() {
-		return localDateTime;
-	}
-
-	public void setLocalDateTime(String localDateTime2) {
-		this.localDateTime = localDateTime2;
-	}
-
 	public boolean isChecked() {
 		return isChecked;
 	}
@@ -67,10 +73,26 @@ public class TicketDto {
 	public void setChecked(boolean isChecked) {
 		this.isChecked = isChecked;
 	}
+	
+	public String getCreatedOn() {
+		return createdOn;
+	}
+
+	public void setCreatedOn(String createdOn) {
+		this.createdOn = createdOn;
+	}
+
+	public String getExpiresOn() {
+		return expiresOn;
+	}
+
+	public void setExpiresOn(String expiresOn) {
+		this.expiresOn = expiresOn;
+	}
 
 	@Override
 	public String toString() {
-		return "Ticket [id=" + id + ", busId=" + busId + ", localDateTime=" + localDateTime + ", isChecked=" + isChecked
+		return "TicketDto [id=" + id + ", busId=" + busId + ", localDateTime=" + createdOn + ", isChecked=" + isChecked
 				+ "]";
 	}
 

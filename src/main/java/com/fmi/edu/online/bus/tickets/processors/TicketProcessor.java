@@ -1,38 +1,37 @@
 package com.fmi.edu.online.bus.tickets.processors;
 
-import java.util.Date;
-
-import com.fmi.edu.online.bus.tickets.dao.TicketDao;
+import com.fmi.edu.online.bus.tickets.dao.TicketDtoDao;
 import com.fmi.edu.online.bus.tickets.model.Ticket;
+import com.fmi.edu.online.bus.tickets.model.TicketDto;
 
 public class TicketProcessor {
 	
 //	@Inject
-	private TicketDao ticketDAO = new TicketDao();
+	private TicketDtoDao ticketDtoDAO = new TicketDtoDao();
 	
-	public void createTicket(String busId, Date createdOn, boolean isChecked) {
+	public void createTicket(Ticket ticket) {
 //		if(isValidInformation(busId,createdOn)){
 //			
 //		}
 		//TODO validation
-		Ticket ticket = new Ticket(busId, createdOn, isChecked);
-		ticketDAO.create(ticket);
+		TicketDto ticketDto = new TicketDto(ticket.getBusId(), ticket.getCreatedOn().toString(), ticket.isChecked());
+		ticketDtoDAO.create(ticketDto);
 	}
 	
 	public void updateTicket(String ticketId){
 		if(!isValidTicket(ticketId)){
 			
 		}
-		ticketDAO.update(ticketId);
+		ticketDtoDAO.update(ticketId);
 //		ticketDAO.update(ticket);
 	}
 	
-	public Ticket getTicket(String id){
-		return ticketDAO.get(id);
+	public TicketDto getTicket(String id){
+		return ticketDtoDAO.get(id);
 	}
 	
 	public void deleteTicket(String id){
-		ticketDAO.delete(id);
+		ticketDtoDAO.delete(id);
 	}
 	
 	

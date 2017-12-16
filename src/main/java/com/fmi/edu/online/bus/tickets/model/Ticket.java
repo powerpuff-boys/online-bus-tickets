@@ -1,31 +1,19 @@
 package com.fmi.edu.online.bus.tickets.model;
 
+import java.util.Calendar;
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
-@Entity
-@Table(name = "Ticket")
 public class Ticket {
 
-	@Id
-	@GeneratedValue
 	private String id;
 
-	@Column(nullable = false)
 	private String busId;
+	
+	private Date createdOn;
+	
+	private Date expiresOn;
 
-	@Column(nullable = false, updatable = false)
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date localDateTime;
-
-	@Column(nullable = false)
 	private boolean isChecked;
 
 	public Ticket() {
@@ -33,7 +21,7 @@ public class Ticket {
 
 	public Ticket(String busId, Date createdOn, boolean isChecked) {
 		setBusId(busId);
-		setLocalDateTime(localDateTime);
+		setCreatedOn(createdOn);
 		setChecked(isChecked);
 	}
 
@@ -66,12 +54,12 @@ public class Ticket {
 		this.busId = busId;
 	}
 
-	public Date getLocalDateTime() {
-		return localDateTime;
+	public Date getCreatedOn() {
+		return createdOn;
 	}
 
-	public void setLocalDateTime(Date localDateTime2) {
-		this.localDateTime = localDateTime2;
+	public void setCreatedOn(Date localDateTime2) {
+		this.createdOn = localDateTime2;
 	}
 
 	public boolean isChecked() {
@@ -82,9 +70,20 @@ public class Ticket {
 		this.isChecked = isChecked;
 	}
 
+	public Date getExpiresOn() {
+		return expiresOn;
+	}
+
+	public void setExpiresOn() {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(createdOn);
+		cal.add(Calendar.HOUR, 2);
+		this.expiresOn = cal.getTime();
+	}
+
 	@Override
 	public String toString() {
-		return "Ticket [id=" + id + ", busId=" + busId + ", localDateTime=" + localDateTime + ", isChecked=" + isChecked
+		return "Ticket [id=" + id + ", busId=" + busId + ", createdOn=" + createdOn + ", isChecked=" + isChecked
 				+ "]";
 	}
 

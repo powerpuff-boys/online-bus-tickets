@@ -4,15 +4,15 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-import com.fmi.edu.online.bus.tickets.model.Ticket;
+import com.fmi.edu.online.bus.tickets.model.TicketDto;
 
 
-public class TicketDao {
+public class TicketDtoDao {
 	
 	EntityManagerFactory emf = Persistence.createEntityManagerFactory("bus-tickets");
 	EntityManager em = emf.createEntityManager();
 	
-	public void create(Ticket ticket) {
+	public void create(TicketDto ticket) {
 		// TODO Auto-generated method stub
 		em.getTransaction().begin();
 		em.persist(ticket);
@@ -22,19 +22,19 @@ public class TicketDao {
 	public void update(String ticketId) {
 		// TODO Auto-generated method stub
 		em.getTransaction().begin();
-		em.find(Ticket.class,ticketId).setChecked(false);
+		em.find(TicketDto.class,ticketId).setChecked(false);
 		em.getTransaction().commit();
 	}
 
-	public Ticket get(String id) {
+	public TicketDto get(String id) {
 		// TODO Auto-generated method stub
-		return em.find(Ticket.class, id);
+		return em.find(TicketDto.class, id);
 	}
 
 	public void delete(String id) {
 		// TODO Auto-generated method stub
 		em.getTransaction().begin();
-		em.remove(em.find(Ticket.class, id));
+		em.remove(em.find(TicketDto.class, id));
 		em.getTransaction().commit();
 	}
 }
