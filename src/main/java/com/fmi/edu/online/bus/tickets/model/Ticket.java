@@ -3,15 +3,14 @@ package com.fmi.edu.online.bus.tickets.model;
 import java.util.Calendar;
 import java.util.Date;
 
-
 public class Ticket {
 
 	private String id;
 
 	private String busId;
-	
+
 	private Date createdOn;
-	
+
 	private Date expiresOn;
 
 	private boolean isChecked;
@@ -30,11 +29,10 @@ public class Ticket {
 		setId(ticketId);
 	}
 
-	@SuppressWarnings("deprecation")
 	public Ticket(TicketDto ticketDto) {
 		setId(ticketDto.getId());
 		setBusId(ticketDto.getBusId());
-		this.setLocalDateTime(new Date(ticketDto.getLocalDateTime()));
+		this.setCreatedOn(new Date(ticketDto.getCreatedOn()));
 		setChecked(ticketDto.isChecked());
 	}
 
@@ -83,7 +81,7 @@ public class Ticket {
 
 	@Override
 	public String toString() {
-		return "Ticket [id=" + id + ", busId=" + busId + ", createdOn=" + createdOn + ", isChecked=" + isChecked
+		return "Ticket [id=" + id + ", busId=" + busId + ", localDateTime=" + createdOn + ", isChecked=" + isChecked
 				+ "]";
 	}
 

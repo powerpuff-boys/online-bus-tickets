@@ -12,26 +12,27 @@ import javax.persistence.TemporalType;
 @Table(name = "Ticket")
 public class TicketDto {
 
-	@Id 
+	@Id
 	@GeneratedValue
 	private String id;
-	
+
 	@Column(nullable = false)
 	private String busId;
-	
-	@Column(nullable=false, updatable=false)
+
+	@Column(nullable = false, updatable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private String createdOn;
 
-	@Column(nullable=false, updatable=false)
+	@Column(nullable = false, updatable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private String expiresOn;
-	
-	@Column(nullable=false)
+
+	@Column(nullable = false)
 	private boolean isChecked;
 
-	public TicketDto(){}
-	
+	public TicketDto() {
+	}
+
 	public TicketDto(String busId, String createdOn, boolean isChecked) {
 		setBusId(busId);
 		setCreatedOn(createdOn);
@@ -39,14 +40,14 @@ public class TicketDto {
 	}
 
 	public TicketDto(String ticketId, String busId, String createdOn, boolean isChecked) {
-		this(busId,createdOn, isChecked);
+		this(busId, createdOn, isChecked);
 		setId(ticketId);
 	}
 
 	public TicketDto(Ticket ticket) {
 		setId(ticket.getId());
 		setBusId(ticket.getBusId());
-		setLocalDateTime(ticket.getLocalDateTime().toString());
+		setCreatedOn(ticket.getCreatedOn().toString());
 		setChecked(ticket.isChecked());
 	}
 
@@ -73,7 +74,7 @@ public class TicketDto {
 	public void setChecked(boolean isChecked) {
 		this.isChecked = isChecked;
 	}
-	
+
 	public String getCreatedOn() {
 		return createdOn;
 	}

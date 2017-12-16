@@ -1,6 +1,7 @@
 package com.fmi.edu.online.bus.tickets.http;
 
 import java.io.IOException;
+import java.util.Calendar;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
@@ -16,45 +17,55 @@ import org.apache.http.util.EntityUtils;
 
 import com.fmi.edu.online.bus.tickets.model.Ticket;
 import com.fmi.edu.online.bus.tickets.model.TicketDto;
+import com.fmi.edu.online.bus.tickets.model.convertor.TicketConvertor;
 import com.google.gson.Gson;
 
 public class TicketHttpClient {
+	private static final String ENCODING_UTF = "UTF-8";
 	private static final String ACCEPT = "Accept";
 	private static final String CONTENT_TYPE = "Content-Type";
 	private static final String APPLICATION_JSON = "application/json";
-	private static final String ENDPOINT = "http://localhost:8080/bus-tickets-0.0.1-SNAPSHOT/rest/tickets";
+	private static final String ENDPOINT = "http://localhost:8080/bus-tickets/rest/tickets";
 
 	private HttpClient httpClient;
 	private HttpResponse httpResponse;
 	private StringEntity stringEntity;
 	private Gson gson;
+	private TicketDto ticketDto;
 
 	public TicketHttpClient() {
 		httpClient = HttpClientBuilder.create().build();
 		gson = new Gson();
 	}
 
-	public Ticket createTicket(TicketDto ticketDto) throws ClientProtocolException, IOException {
+	public Ticket createTicket(Ticket ticket) throws ClientProtocolException, IOException {
 		HttpPost httpPost = new HttpPost(ENDPOINT);
 		httpPost.setHeader(CONTENT_TYPE, APPLICATION_JSON);
 		httpPost.setHeader(ACCEPT, APPLICATION_JSON);
 
-		stringEntity = new StringEntity(gson.toJson(ticketDto));
+		stringEntity = new StringEntity(gson.toJson(TicketConvertor.convertToDto(ticket)));
 		httpPost.setEntity(stringEntity);
 
 		httpResponse = httpClient.execute(httpPost);
-		return gson.fromJson(EntityUtils.toString(httpResponse.getEntity()), Ticket.class);
+		HttpEntity entity = httpResponse.getEntity();
+		ticketDto = gson.fromJson(IOUtils.toString(entity.getContent(), ENCODING_UTF),
+				TicketDto.class);
+		System.out.println(ticketDto);
+
+		return TicketConvertor.convertToTicket(ticketDto);
 	}
 
-	public Ticket updateTicket(String ticketId, TicketDto ticketDto) throws ClientProtocolException, IOException {
+	public Ticket updateTicket(String ticketId, Ticket ticket) throws ClientProtocolException, IOException {
 		HttpPut httpPut = new HttpPut(buildUrlWith(ticketId));
 		httpPut.setHeader(CONTENT_TYPE, APPLICATION_JSON);
+		httpPut.setHeader(ACCEPT, APPLICATION_JSON);
 
-		stringEntity = new StringEntity(gson.toJson(ticketDto));
+		stringEntity = new StringEntity(gson.toJson(TicketConvertor.convertToDto(ticket)));
 		httpPut.setEntity(stringEntity);
 
 		httpResponse = httpClient.execute(httpPut);
-		return gson.fromJson(EntityUtils.toString(httpResponse.getEntity()), Ticket.class);
+		ticketDto = gson.fromJson(EntityUtils.toString(httpResponse.getEntity()), TicketDto.class);
+		return TicketConvertor.convertToTicket(ticketDto);
 	}
 
 	public Ticket getTicketBy(String ticketId) throws ClientProtocolException, IOException {
@@ -63,7 +74,7 @@ public class TicketHttpClient {
 
 		httpResponse = httpClient.execute(httpGet);
 		HttpEntity entity = httpResponse.getEntity();
-		String entityString = IOUtils.toString(entity.getContent(), "UTF-8");
+		String entityString = IOUtils.toString(entity.getContent(), ENCODING_UTF);
 		return gson.fromJson(entityString, Ticket.class);
 	}
 
@@ -71,4 +82,9 @@ public class TicketHttpClient {
 		return new StringBuilder(ENDPOINT).append("/").append(ticketId).toString();
 	}
 
+	public static void main(String[] args) throws ClientProtocolException, IOException {
+		System.out.println(
+				(new TicketHttpClient().createTicket(new Ticket("bus-id1", Calendar.getInstance().getTime(), false))));
+
+	}
 }
