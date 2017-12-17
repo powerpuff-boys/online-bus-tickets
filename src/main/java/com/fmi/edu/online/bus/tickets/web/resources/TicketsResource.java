@@ -18,6 +18,8 @@ import javax.ws.rs.core.Response.Status;
 
 import com.fmi.edu.online.bus.tickets.Constants;
 import com.fmi.edu.online.bus.tickets.Messages;
+import com.fmi.edu.online.bus.tickets.dao.BusDao;
+import com.fmi.edu.online.bus.tickets.model.Bus;
 import com.fmi.edu.online.bus.tickets.model.TicketDto;
 import com.fmi.edu.online.bus.tickets.processors.PaymentApi;
 import com.fmi.edu.online.bus.tickets.processors.PaymentDetails;
@@ -32,12 +34,13 @@ import com.fmi.edu.online.bus.tickets.processors.UserPaymentDetails;
 public class TicketsResource {
 
 	private TicketProcessor ticketProcessor;
-
+	private BusDao busDao;
 	private PaymentApi paymentApi;
 
 	public TicketsResource() {
 		ticketProcessor = new TicketProcessor();
-		paymentApi =  new PaymentApi(new PaymentExecutor());
+		paymentApi = new PaymentApi(new PaymentExecutor());
+		busDao = new BusDao();
 	}
 
 	@GET
@@ -57,14 +60,21 @@ public class TicketsResource {
 	@POST
 	public Response createTicket(TicketDto ticketDto, @Context HttpServletRequest req) {
 		try {
+			Bus foundBus = busDao.find(ticketDto.getBusId());
+			if (foundBus == null) {
+				return Response.status(Status.NOT_FOUND)
+						.entity(MessageFormat.format("Bus with id {0} does not exist", ticketDto.getBusId())).build();
+			}
+
 			String authorizationHeader = getAuthorizationHeader(req);
-			
+
 			UserPaymentDetails userPaymentDetails = getUserPaymentDetails(authorizationHeader);
-			
+
 			payTicket(userPaymentDetails);
-			
+
 			ticketProcessor.createTicket(ticketDto);
-			return Response.created(URI.create(Constants.DEFAULT_TICKETS_API + ticketDto.getId())).entity(ticketDto).build();
+			return Response.created(URI.create(Constants.DEFAULT_TICKETS_API + ticketDto.getId())).entity(ticketDto)
+					.build();
 		} catch (IllegalArgumentException e) {
 			return Response.status(Status.BAD_REQUEST).entity(e.getMessage()).build();
 		}
@@ -79,7 +89,8 @@ public class TicketsResource {
 	private void payTicket(UserPaymentDetails userPaymentDetails) {
 		PaymentDetails payment = paymentApi.createPayment(userPaymentDetails);
 		if (payment.getPaymentResult() != PaymentResult.DONE) {
-			throw new IllegalArgumentException(MessageFormat.format(Messages.COULD_NOT_PAY_TICKET, payment.getPaymentMessage()));
+			throw new IllegalArgumentException(
+					MessageFormat.format(Messages.COULD_NOT_PAY_TICKET, payment.getPaymentMessage()));
 		}
 	}
 
