@@ -5,9 +5,5 @@
 	id="WebApp_ID" version="3.0">
 	<display-name>bus-tickets</display-name>
 
-	<servlet>
-		<servlet-name>Housekeeper</servlet-name>
-		<servlet-class>com.fmi.edu.online.bus.tickets.housekeeper.Housekeeper</servlet-class>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
+	
 </web-app>
