@@ -1,7 +1,5 @@
 package com.fmi.edu.online.bus.tickets.model;
 
-import java.util.UUID;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -17,10 +15,6 @@ public class Bus {
 
 	@Column(nullable = false, updatable = true)
 	private String line;
-
-	Bus() {
-		id = UUID.randomUUID().toString();
-	}
 
 	public String getId() {
 		return id;
